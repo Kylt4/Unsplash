@@ -13,6 +13,12 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
+# Configuration file containing secret keys
+Secrets.xcconfig
+
+# Example file to include in the repo (without real key)
+!Secrets.xcconfig.example
+
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
