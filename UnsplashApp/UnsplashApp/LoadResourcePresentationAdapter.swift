@@ -41,7 +41,7 @@ final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
 					
 					self?.isLoading = false
 				}, receiveValue: { [weak self] resource in
-					self?.presenter?.didFinishLoading(with: resource)
+                    Task { await self?.presenter?.didFinishLoading(with: resource) }
 				})
 	}
 }

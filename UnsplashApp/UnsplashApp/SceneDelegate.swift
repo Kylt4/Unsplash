@@ -14,6 +14,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    private lazy var localImageLoader = LocalImageDataLoader()
+
     private lazy var scheduler = DispatchQueue(
         label: "com.christophebugnon.infra.queue",
         qos: .userInitiated,
@@ -44,10 +46,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return tabController
     }()
 
-        private lazy var UIKitNavigationController = UINavigationController(rootViewController: UIKitFeedComposer.feedComposedWith(
-            feedLoader: makeRemoteFeedLoader,
-            imageLoader: makeLocalImageLoaderWithRemoteFallback,
-            selection: select(image:)))
+    private lazy var UIKitNavigationController = UINavigationController(rootViewController: UIKitFeedComposer.feedComposedWith(
+        feedLoader: makeRemoteFeedLoader,
+        imageLoader: makeLocalImageLoaderWithRemoteFallback,
+        selection: select(image:)))
 
     private lazy var swiftUINavigationController = UINavigationController(
         rootViewController: SwiftUIFeedComposer.feedComposedWith(
@@ -135,7 +137,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> ImageDataLoader.Publisher {
-        let localImageLoader = LocalImageDataLoader.shared
+        let localImageLoader = localImageLoader
 
         return localImageLoader
             .loadImageDataPublisher(from: url)

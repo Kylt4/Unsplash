@@ -23,7 +23,7 @@ public final class URLSessionHTTPClient: HTTPClient {
 		}
 	}
 	
-	public func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+	public func get(from url: URL, completion: @escaping @Sendable (HTTPClient.Result) -> Void) -> HTTPClientTask {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(apiKey,

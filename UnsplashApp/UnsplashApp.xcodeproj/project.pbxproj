@@ -13,6 +13,7 @@
 		4653685A2E0AF0C40026EDDE /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 465368592E0AF0C40026EDDE /* Secrets.xcconfig */; };
 		4653685C2E0AF18E0026EDDE /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4653685B2E0AF18E0026EDDE /* Secrets.swift */; };
 		465368902E0AF5F50026EDDE /* Secrets.xcconfig.example in Resources */ = {isa = PBXBuildFile; fileRef = 4653688F2E0AF5F50026EDDE /* Secrets.xcconfig.example */; };
+		46536A452E0C33E70026EDDE /* SendableProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46536A442E0C33E70026EDDE /* SendableProxy.swift */; };
 		466341712984543800DEEBEC /* FeedCellControllerDelegateComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466341702984543800DEEBEC /* FeedCellControllerDelegateComposer.swift */; };
 		4667F9222C4EAA6A00D36ABD /* ProfileViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667F9212C4EAA6A00D36ABD /* ProfileViewAdapter.swift */; };
 		4667F9242C4EAF6300D36ABD /* UIKitProfileComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667F9232C4EAF6300D36ABD /* UIKitProfileComposer.swift */; };
@@ -71,6 +72,7 @@
 		465368592E0AF0C40026EDDE /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		4653685B2E0AF18E0026EDDE /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		4653688F2E0AF5F50026EDDE /* Secrets.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text; path = Secrets.xcconfig.example; sourceTree = "<group>"; };
+		46536A442E0C33E70026EDDE /* SendableProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendableProxy.swift; sourceTree = "<group>"; };
 		466341702984543800DEEBEC /* FeedCellControllerDelegateComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellControllerDelegateComposer.swift; sourceTree = "<group>"; };
 		4667F9212C4EAA6A00D36ABD /* ProfileViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewAdapter.swift; sourceTree = "<group>"; };
 		4667F9232C4EAF6300D36ABD /* UIKitProfileComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitProfileComposer.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				463B2EF82E09DC08008114B5 /* SwiftUI */,
 				46A897742984295400952BE1 /* LoadResourcePresentationAdapter.swift */,
 				46A8977A298429B100952BE1 /* CombineHelpers.swift */,
+				46536A442E0C33E70026EDDE /* SendableProxy.swift */,
 				46B8488E298422C8006D58FD /* LaunchScreen.storyboard */,
 				46B84891298422C8006D58FD /* Info.plist */,
 				4653684E2E0A76140026EDDE /* UIImage+tryMake.swift */,
@@ -358,6 +361,7 @@
 				46A897792984299700952BE1 /* WeakRefVirtualProxy.swift in Sources */,
 				466341712984543800DEEBEC /* FeedCellControllerDelegateComposer.swift in Sources */,
 				46A897772984297F00952BE1 /* FeedViewAdapter.swift in Sources */,
+				46536A452E0C33E70026EDDE /* SendableProxy.swift in Sources */,
 				4671C5522E086E63006F3F78 /* SwiftUIFeedComposer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,6 +468,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -518,6 +523,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

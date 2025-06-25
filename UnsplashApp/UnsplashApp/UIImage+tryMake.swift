@@ -10,6 +10,7 @@ import UIKit
 public extension UIImage {
     struct InvalidImageData: Error {}
 
+    @Sendable
     static func tryMake(data: Data) async throws -> UIImage {
         try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {
@@ -18,13 +19,13 @@ public extension UIImage {
                     continuation.resume(throwing: InvalidImageData())
                     return
                 }
-
                 let image = UIImage(cgImage: cgImage)
                 continuation.resume(returning: image)
             }
         }
     }
 
+    @Sendable
     static func tryMakeThumbnail(data: Data) async throws -> UIImage {
         try await withCheckedThrowingContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {

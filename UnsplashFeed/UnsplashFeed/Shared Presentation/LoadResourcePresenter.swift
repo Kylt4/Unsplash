@@ -13,7 +13,7 @@ public protocol ResourceView {
 
 @MainActor
 public final class LoadResourcePresenter<Resource, View: ResourceView> {
-    public typealias Mapper = (Resource) async throws -> View.ResourceViewModel
+    public typealias Mapper = @MainActor (Resource) async throws -> View.ResourceViewModel
 
     private let resourceView: View
     private let loadingView: ResourceLoadingView
@@ -45,20 +45,14 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
         errorView.display(.noError)
         loadingView.display(ResourceLoadingViewModel(isLoading: true))
     }
-    
-    public func didFinishLoading(with resource: Resource) {
-        Task.detached(priority: .userInitiated) {
-            do {
-                let viewModel = try await self.mapper(resource)
-                await MainActor.run {
-                    self.resourceView.display(viewModel)
-                    self.loadingView.display(ResourceLoadingViewModel(isLoading: false))
-                }
-            } catch {
-                await MainActor.run {
-                    self.didFinishLoading(with: error)
-                }
-            }
+
+    public func didFinishLoading(with resource: Resource) async {
+        do {
+            let viewModel = try await self.mapper(resource)
+            self.resourceView.display(viewModel)
+            self.loadingView.display(ResourceLoadingViewModel(isLoading: false))
+        } catch {
+            self.didFinishLoading(with: error)
         }
     }
 

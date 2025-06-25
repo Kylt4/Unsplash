@@ -37,9 +37,11 @@ public final class SwiftUIFeedComposer {
             resourceView: state,
             loadingView: state,
             errorView: state,
-            mapper: recursiveMapper(state: state,
-                                    imageLoader: imageLoader,
-                                    selection: selection)
+            mapper: SendableProxy.makeSendable(
+                recursiveMapper(state: state,
+                                imageLoader: imageLoader,
+                                selection: selection)
+            )
         )
 
         return UIHostingController(
@@ -102,7 +104,6 @@ public final class SwiftUIFeedComposer {
         imageLoader: @escaping (URL) -> ImageDataLoader.Publisher,
         selection: @escaping (FeedImage) -> Void
     ) -> (Paginated<FeedImage>) -> [FeedImageStateContainer] {
-
         return { page in
             if let loader = page.loadMorePublisher {
                 let adapter = LoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewState>(loader: loader)
@@ -111,9 +112,11 @@ public final class SwiftUIFeedComposer {
                     resourceView: state,
                     loadingView: state,
                     errorView: state,
-                    mapper: recursiveMapper(state: state,
-                                            imageLoader: imageLoader,
-                                            selection: selection)
+                    mapper: SendableProxy.makeSendable(
+                        recursiveMapper(state: state,
+                                        imageLoader: imageLoader,
+                                        selection: selection)
+                    )
                 )
             }
 

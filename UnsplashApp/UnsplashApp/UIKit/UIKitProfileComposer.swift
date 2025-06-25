@@ -41,7 +41,7 @@ public final class UIKitProfileComposer {
         adapter.presenter = LoadResourcePresenter(resourceView: profileAdapter,
                                                   loadingView: WeakRefVirtualProxy(profileVC),
                                                   errorView: WeakRefVirtualProxy(profileVC),
-                                                  mapper: ProfileImagesPresenter.map(_:))
+                                                  mapper: SendableProxy.makeSendable(ProfileImagesPresenter.map(_:)))
         return profileVC
     }
 }

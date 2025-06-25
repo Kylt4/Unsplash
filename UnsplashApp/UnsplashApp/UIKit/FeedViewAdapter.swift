@@ -64,8 +64,8 @@ final class FeedViewAdapter: ResourceView {
                 resourceView: ImageWeakRefVirtualProxy(profileView),
                 loadingView: WeakRefVirtualProxy(profileView),
                 errorView: WeakRefVirtualProxy(profileView),
-                mapper: UIImage.tryMake)
-			
+                mapper: UIImage.tryMake(data:))
+
 			let controller = CellController(id: model, view)
 			currentFeed[model] = controller
 			return controller

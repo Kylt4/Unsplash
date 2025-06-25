@@ -40,7 +40,7 @@ public extension HTTPClient {
 		
 		return Deferred {
 			Future { completion in
-				task = self.get(from: url, completion: completion)
+                task = self.get(from: url, completion: SendableProxy.makeSendable(completion))
 			}
 		}
 		.handleEvents(receiveCancel: { task?.cancel() })

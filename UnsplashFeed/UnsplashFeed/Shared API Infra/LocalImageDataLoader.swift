@@ -8,10 +8,9 @@
 import Foundation
 
 public class LocalImageDataLoader: ImageDataLoader, ImageDataCache {
-    public static let shared = LocalImageDataLoader()
     private var cache: NSCache<NSString, NSData>
 
-    private init() {
+    public init() {
         self.cache = NSCache<NSString, NSData>()
     }
 

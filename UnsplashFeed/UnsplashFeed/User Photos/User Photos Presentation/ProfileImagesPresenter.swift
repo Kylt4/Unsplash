@@ -8,6 +8,7 @@
 import Foundation
 
 public final class ProfileImagesPresenter {
+    
     public static func map(_ photos: ProfileImagesItem) -> ProfileImagesViewModel {
         return ProfileImagesViewModel(urls: photos.urls)
     }

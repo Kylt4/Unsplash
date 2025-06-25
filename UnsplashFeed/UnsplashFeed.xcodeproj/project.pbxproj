@@ -35,7 +35,6 @@
 		4623E4FD29840C39001BBE11 /* FeedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623E4FC29840C39001BBE11 /* FeedImageViewModel.swift */; };
 		4623E4FF29840C95001BBE11 /* FeedProfileImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623E4FE29840C95001BBE11 /* FeedProfileImageViewModel.swift */; };
 		463B2EFA2E09DF99008114B5 /* FeedImageToProfileImageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463B2EF92E09DF99008114B5 /* FeedImageToProfileImageMapper.swift */; };
-		4653684D2E0A75EC0026EDDE /* UIImage+tryMake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4653684C2E0A75EC0026EDDE /* UIImage+tryMake.swift */; };
 		4667F9142C4E4EF300D36ABD /* FeedImageViewHeaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667F9132C4E4EF300D36ABD /* FeedImageViewHeaderController.swift */; };
 		4667F9172C4E4F1200D36ABD /* FeedImageViewHeaderContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667F9162C4E4F1200D36ABD /* FeedImageViewHeaderContainer.swift */; };
 		4667F9192C4E4F6800D36ABD /* CollectionImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667F9182C4E4F6800D36ABD /* CollectionImageViewCell.swift */; };
@@ -123,7 +122,6 @@
 		4623E4FC29840C39001BBE11 /* FeedImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageViewModel.swift; sourceTree = "<group>"; };
 		4623E4FE29840C95001BBE11 /* FeedProfileImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedProfileImageViewModel.swift; sourceTree = "<group>"; };
 		463B2EF92E09DF99008114B5 /* FeedImageToProfileImageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageToProfileImageMapper.swift; sourceTree = "<group>"; };
-		4653684C2E0A75EC0026EDDE /* UIImage+tryMake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+tryMake.swift"; sourceTree = "<group>"; };
 		4667F9132C4E4EF300D36ABD /* FeedImageViewHeaderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageViewHeaderController.swift; sourceTree = "<group>"; };
 		4667F9162C4E4F1200D36ABD /* FeedImageViewHeaderContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageViewHeaderContainer.swift; sourceTree = "<group>"; };
 		4667F9182C4E4F6800D36ABD /* CollectionImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionImageViewCell.swift; sourceTree = "<group>"; };
@@ -363,7 +361,6 @@
 			children = (
 				4671C54A2E085B04006F3F78 /* SwiftUI */,
 				4671C5482E085ADB006F3F78 /* UIKit */,
-				4653684C2E0A75EC0026EDDE /* UIImage+tryMake.swift */,
 			);
 			path = "Feed UI";
 			sourceTree = "<group>";
@@ -752,7 +749,6 @@
 				46B8486F29841FED006D58FD /* UIView+Shimmering.swift in Sources */,
 				4667F9142C4E4EF300D36ABD /* FeedImageViewHeaderController.swift in Sources */,
 				4623E4F429840B07001BBE11 /* UIRefreshControl+Helpers.swift in Sources */,
-				4653684D2E0A75EC0026EDDE /* UIImage+tryMake.swift in Sources */,
 				4623E4ED29840AFC001BBE11 /* ErrorView.swift in Sources */,
 				46B8486E29841FED006D58FD /* UIImageView+Animations.swift in Sources */,
 				D9A8720E2A5DD58400A5290E /* XIBView.swift in Sources */,
@@ -856,6 +852,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -912,6 +909,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -948,7 +946,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -982,7 +980,7 @@
 				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -999,7 +997,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -1015,7 +1013,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = christophe.bugnon.UnsplashFeedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -1096,7 +1094,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1114,7 +1112,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
