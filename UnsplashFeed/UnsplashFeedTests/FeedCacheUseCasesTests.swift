@@ -5,10 +5,10 @@
 //  Created by Christophe Bugnon on 26/06/2025.
 //
 
-import Testing
 import Foundation
+import XCTest
 
-class LocalFeedCache {
+final class LocalFeedCache: @unchecked Sendable {
     private let store: FeedStore
 
     init(store: FeedStore) {
@@ -30,7 +30,7 @@ class FeedStore: @unchecked Sendable {
     private(set) var messages: [ReceivedMessage] = []
 
     // MARK: - Continuations
-    
+
     private var deletionContinuation: CheckedContinuation<Void, Error>?
     private var insertionContinuation: CheckedContinuation<Void, Never>?
 
@@ -68,46 +68,50 @@ class FeedStore: @unchecked Sendable {
     }
 }
 
-class FeedCacheUseCasesTests {
+class FeedCacheUseCasesTests: XCTestCase {
 
-    @Test
     func test_init_doesNotDeliversMessageUponCreation() {
         let store = FeedStore()
         let _ = LocalFeedCache(store: store)
 
-        #expect(store.messages == [])
+        XCTAssertTrue(store.messages.isEmpty)
     }
 
-    @Test
     func test_save_doesNotRequestFeedInsertionOnDeletionError() async {
         let store = FeedStore()
         let sut = LocalFeedCache(store: store)
-        let anyError = NSError(domain: "any error", code: 0)
+        let deletionError = NSError(domain: "any error", code: 0)
 
-        Task {
-            try await sut.save()
+        await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed]) {
+            store.completeDeletionWithError(deletionError)
         }
-
-        try? await Task.sleep(nanoseconds: 1_000_000)
-        store.completeDeletionWithError(anyError)
-
-        #expect(store.messages == [.deleteCachedFeed])
     }
 
 
-    @Test
     func test_save_requestFeedInsertionOnSucessfulDeletion() async throws {
         let store = FeedStore()
         let sut = LocalFeedCache(store: store)
 
-        Task {
-            try await sut.save()
-        }
+        await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed, .insert], when: {
+            store.completeDeletionSuccessfully()
+            store.completeInsertionSucessfully()
+        })
+    }
+
+    // MARK: - Helpers
+
+    func expect(_ sut: LocalFeedCache,
+                store: FeedStore,
+                toCompleteWith expectedMessages: [FeedStore.ReceivedMessage],
+                when action: () -> Void,
+                file: StaticString = #filePath,
+                line: UInt = #line) async {
+
+        Task { try await sut.save() }
 
         try? await Task.sleep(nanoseconds: 1_000_000)
-        store.completeDeletionSuccessfully()
-        store.completeInsertionSucessfully()
+        action()
 
-        #expect(store.messages == [.deleteCachedFeed, .insert])
+        XCTAssertEqual(store.messages, expectedMessages, file: file, line: line)
     }
 }
