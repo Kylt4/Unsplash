@@ -17,7 +17,7 @@ final class LocalFeedCache: @unchecked Sendable {
 
     func save() async throws {
         try await store.deleteCachedFeed()
-        await store.insert()
+        try await store.insert()
     }
 }
 
@@ -32,7 +32,7 @@ class FeedStore: @unchecked Sendable {
     // MARK: - Continuations
 
     private var deletionContinuation: CheckedContinuation<Void, Error>?
-    private var insertionContinuation: CheckedContinuation<Void, Never>?
+    private var insertionContinuation: CheckedContinuation<Void, Error>?
 
     // MARK: - Deletions
 
@@ -43,27 +43,36 @@ class FeedStore: @unchecked Sendable {
         }
     }
 
-    func completeDeletionSuccessfully() {
+    func completeDeletionSuccessfully() async {
+        await waitForContinuation()
         deletionContinuation?.resume()
         deletionContinuation = nil
     }
 
-    func completeDeletionWithError(_ error: Error) {
+    func completeDeletionWithError(_ error: Error) async {
+        await waitForContinuation()
         deletionContinuation?.resume(throwing: error)
         deletionContinuation = nil
     }
 
     // MARK: - Insertions
 
-    func insert() async {
+    func insert() async throws {
         messages.append(.insert)
-        await withCheckedContinuation { continuation in
+        try await withCheckedThrowingContinuation { continuation in
             insertionContinuation = continuation
         }
     }
 
-    func completeInsertionSucessfully() {
+    func completeInsertionSucessfully() async {
+        await waitForContinuation()
         insertionContinuation?.resume()
+        insertionContinuation = nil
+    }
+
+    func completeInsertionWithError(_ error: Error) async {
+        await waitForContinuation()
+        insertionContinuation?.resume(throwing: error)
         insertionContinuation = nil
     }
 }
@@ -83,18 +92,17 @@ class FeedCacheUseCasesTests: XCTestCase {
         let deletionError = NSError(domain: "deletion error", code: 0)
 
         await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed]) {
-            store.completeDeletionWithError(deletionError)
+            await store.completeDeletionWithError(deletionError)
         }
     }
 
-
-    func test_save_requestFeedInsertionOnSucessfulDeletion() async throws {
+    func test_save_requestFeedInsertionOnSucessfulDeletion() async {
         let store = FeedStore()
         let sut = LocalFeedCache(store: store)
 
         await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed, .insert], when: {
-            store.completeDeletionSuccessfully()
-            store.completeInsertionSucessfully()
+            await store.completeDeletionSuccessfully()
+            await store.completeInsertionSucessfully()
         })
     }
 
@@ -103,16 +111,19 @@ class FeedCacheUseCasesTests: XCTestCase {
         let sut = LocalFeedCache(store: store)
         let deletionError = NSError(domain: "deletion error", code: 0)
 
-        let task = Task { try await sut.save() }
+        await expect(sut, toCompleteWith: deletionError, when: {
+            await store.completeDeletionWithError(deletionError)
+        })
+    }
 
-        try? await Task.sleep(nanoseconds: 1_000_000)
-        store.completeDeletionWithError(deletionError)
+    func test_save_failsOnInsertionError() async {
+        let store = FeedStore()
+        let sut = LocalFeedCache(store: store)
+        let insertionError = NSError(domain: "insertion error", code: 0)
 
-        do {
-            try await task.value
-            XCTFail("Expected error but save succeeded")
-        } catch {
-            XCTAssertEqual(error as NSError, deletionError)
+        await expect(sut, toCompleteWith: insertionError) {
+            await store.completeDeletionSuccessfully()
+            await store.completeInsertionWithError(insertionError)
         }
     }
 
@@ -121,15 +132,37 @@ class FeedCacheUseCasesTests: XCTestCase {
     func expect(_ sut: LocalFeedCache,
                 store: FeedStore,
                 toCompleteWith expectedMessages: [FeedStore.ReceivedMessage],
-                when action: () -> Void,
+                when action: () async -> Void,
                 file: StaticString = #filePath,
                 line: UInt = #line) async {
 
         Task { try await sut.save() }
 
         try? await Task.sleep(nanoseconds: 1_000_000)
-        action()
+        await action()
 
         XCTAssertEqual(store.messages, expectedMessages, file: file, line: line)
     }
+
+    func expect(_ sut: LocalFeedCache,
+                toCompleteWith expectedError: Error?,
+                when action: () async -> Void,
+                file: StaticString = #filePath,
+                line: UInt = #line) async {
+
+        let task = Task { try await sut.save() }
+
+        await action()
+
+        do {
+            try await task.value
+            XCTFail("Expected error but save succeeded")
+        } catch {
+            XCTAssertEqual(error as NSError, expectedError as? NSError)
+        }
+    }
+}
+
+func waitForContinuation() async {
+    try? await Task.sleep(nanoseconds: 1_000_000)
 }
