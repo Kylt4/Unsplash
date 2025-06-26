@@ -64,7 +64,7 @@ class FeedStore: @unchecked Sendable {
         }
     }
 
-    func completeInsertionSucessfully() async {
+    func completeInsertionSuccessfully() async {
         await waitForContinuation()
         insertionContinuation?.resume()
         insertionContinuation = nil
@@ -102,7 +102,7 @@ class FeedCacheUseCasesTests: XCTestCase {
 
         await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed, .insert], when: {
             await store.completeDeletionSuccessfully()
-            await store.completeInsertionSucessfully()
+            await store.completeInsertionSuccessfully()
         })
     }
 
@@ -124,6 +124,16 @@ class FeedCacheUseCasesTests: XCTestCase {
         await expect(sut, toCompleteWith: insertionError) {
             await store.completeDeletionSuccessfully()
             await store.completeInsertionWithError(insertionError)
+        }
+    }
+
+    func test_save_succeedsOnSuccessfulCacheInsertion() async {
+        let store = FeedStore()
+        let sut = LocalFeedCache(store: store)
+
+        await expect(sut, toCompleteWith: nil) {
+            await store.completeDeletionSuccessfully()
+            await store.completeInsertionSuccessfully()
         }
     }
 
@@ -154,12 +164,14 @@ class FeedCacheUseCasesTests: XCTestCase {
 
         await action()
 
+        var receivedError: Error?
         do {
             try await task.value
-            XCTFail("Expected error but save succeeded")
         } catch {
-            XCTAssertEqual(error as NSError, expectedError as? NSError)
+            receivedError = error
         }
+
+        XCTAssertEqual(receivedError as? NSError, expectedError as? NSError, file: file, line: line)
     }
 }
 
