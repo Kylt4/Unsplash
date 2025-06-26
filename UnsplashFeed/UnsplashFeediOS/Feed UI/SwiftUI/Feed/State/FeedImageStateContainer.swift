@@ -13,7 +13,8 @@ public typealias FeedImageViewState = ImageModelViewState<FeedImageViewModel>
 
 @MainActor
 @Observable
-public class FeedImageStateContainer {
+public class FeedImageStateContainer: Identifiable {
+    public let id = UUID()
     var profile: ImageModelViewState<FeedProfileImageViewModel>
     var image: ImageModelViewState<FeedImageViewModel>
 

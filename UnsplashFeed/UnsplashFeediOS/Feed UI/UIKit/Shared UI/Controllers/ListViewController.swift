@@ -37,7 +37,10 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         }
 
         errorView.onShow = updateHeader
-        errorView.onHide = updateHeader
+        errorView.onHide = { [weak self] in
+            updateHeader()
+            self?.refresh()
+        }
     }
 
     public override func viewDidLayoutSubviews() {

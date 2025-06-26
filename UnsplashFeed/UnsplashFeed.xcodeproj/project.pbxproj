@@ -196,9 +196,9 @@
 			isa = PBXGroup;
 			children = (
 				4623E4912984079E001BBE11 /* UnsplashFeed */,
-				4623E49B2984079E001BBE11 /* UnsplashFeedTests */,
+				46CE3AD22E0D291600D03E97 /* UnsplashFeedTests */,
 				4623E4D129840AA4001BBE11 /* UnsplashFeediOS */,
-				4623E4DB29840AA4001BBE11 /* UnsplashFeediOSTests */,
+				46CE3AD12E0D290700D03E97 /* UnsplashFeediOSTests */,
 				4623E4902984079E001BBE11 /* Products */,
 				46B8485E29841AC9006D58FD /* Frameworks */,
 			);
@@ -226,13 +226,6 @@
 				465368922E0B083D0026EDDE /* User Photos */,
 			);
 			path = UnsplashFeed;
-			sourceTree = "<group>";
-		};
-		4623E49B2984079E001BBE11 /* UnsplashFeedTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UnsplashFeedTests;
 			sourceTree = "<group>";
 		};
 		4623E4A7298407EC001BBE11 /* Feed Feature */ = {
@@ -308,13 +301,6 @@
 			path = UnsplashFeediOS;
 			sourceTree = "<group>";
 		};
-		4623E4DB29840AA4001BBE11 /* UnsplashFeediOSTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UnsplashFeediOSTests;
-			sourceTree = "<group>";
-		};
 		4623E4E529840AD3001BBE11 /* Shared UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,7 +354,6 @@
 		465368912E0B08350026EDDE /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				465368932E0B08450026EDDE /* Feed Cache */,
 				4623E4AF298408C9001BBE11 /* Feed Presentation */,
 				4623E4AA29840876001BBE11 /* Feed API */,
 				4623E4A7298407EC001BBE11 /* Feed Feature */,
@@ -384,13 +369,6 @@
 				D98518C32A5EC5B4009C605E /* User Photos Feature */,
 			);
 			path = "User Photos";
-			sourceTree = "<group>";
-		};
-		465368932E0B08450026EDDE /* Feed Cache */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Feed Cache";
 			sourceTree = "<group>";
 		};
 		4667F9122C4E4EED00D36ABD /* Controllers */ = {
@@ -485,6 +463,20 @@
 				46A8978929844E4600952BE1 /* FeedProfileImageCellController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		46CE3AD12E0D290700D03E97 /* UnsplashFeediOSTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UnsplashFeediOSTests;
+			sourceTree = "<group>";
+		};
+		46CE3AD22E0D291600D03E97 /* UnsplashFeedTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UnsplashFeedTests;
 			sourceTree = "<group>";
 		};
 		D98518C32A5EC5B4009C605E /* User Photos Feature */ = {
@@ -634,6 +626,7 @@
 					};
 					4623E4D629840AA4001BBE11 = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1630;
 					};
 				};
 			};
@@ -1084,6 +1077,7 @@
 		4623E4E329840AA4001BBE11 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9SJF823VHD;
@@ -1094,6 +1088,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1102,6 +1097,7 @@
 		4623E4E429840AA4001BBE11 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9SJF823VHD;

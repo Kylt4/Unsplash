@@ -9,8 +9,8 @@ import SwiftUI
 import UnsplashFeed
 
 public struct FeedView: View {
-    @State private var canLoadMore = true
     @State private var shouldLoad = true
+
     var state: FeedViewState
 
     public init(state: FeedViewState) {
@@ -19,28 +19,32 @@ public struct FeedView: View {
 
     public var body: some View {
         VStack {
-            if state.isLoading {
+            if state.shouldShowLoader {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())
             }
-            ScrollView(.vertical) {
-                LazyVStack(spacing: 0) {
-                    ForEach(state.models.indices, id: \.self) { index in
-                        FeedCardView(state: state.models[index])
+
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(state.models) { model in
+                        FeedCardView(state: model)
+                            .id(model.id)
                     }
+
                     if !state.models.isEmpty {
                         PaginatedLoaderView(loadMore: state.loadMore)
-                        .frame(height: 50)
+                            .frame(height: 50)
                     }
                 }
+                .padding()
+            }
+        }
+        .onAppear {
+            if shouldLoad {
+                shouldLoad = false
+                state.load()
             }
         }
         .navigationTitle("Feed")
-        .navigationBarTitleDisplayMode(.automatic)
-        .task {
-            guard shouldLoad else { return }
-            shouldLoad = false
-            state.load()
-        }
     }
 }

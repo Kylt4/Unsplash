@@ -8,13 +8,17 @@
 import SwiftUI
 import UnsplashFeed
 
+@MainActor
 @Observable
 public class FeedViewState: ResourceView, ResourceErrorView, ResourceLoadingView {
     public typealias ResourceViewModel = [FeedImageStateContainer]
     var models: ResourceViewModel
     var error: String?
-    var isLoading: Bool = false
+    private var isLoading: Bool = false
     private var canLoadMore = true
+    var shouldShowLoader: Bool {
+        return isLoading && models.isEmpty
+    }
 
     let onLoad: () -> Void
     let onLoadMore: () -> Void

@@ -10,7 +10,6 @@
 		463CFDBC2E06853F003980AF /* UnsplashFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9A871862A58057900A5290E /* UnsplashFeed.framework */; };
 		463CFDBD2E06853F003980AF /* UnsplashFeed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D9A871862A58057900A5290E /* UnsplashFeed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4653684F2E0A76140026EDDE /* UIImage+tryMake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4653684E2E0A76140026EDDE /* UIImage+tryMake.swift */; };
-		4653685A2E0AF0C40026EDDE /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 465368592E0AF0C40026EDDE /* Secrets.xcconfig */; };
 		4653685C2E0AF18E0026EDDE /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4653685B2E0AF18E0026EDDE /* Secrets.swift */; };
 		465368902E0AF5F50026EDDE /* Secrets.xcconfig.example in Resources */ = {isa = PBXBuildFile; fileRef = 4653688F2E0AF5F50026EDDE /* Secrets.xcconfig.example */; };
 		46536A452E0C33E70026EDDE /* SendableProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46536A442E0C33E70026EDDE /* SendableProxy.swift */; };
@@ -280,7 +279,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					46B8487F298422C8006D58FD = {
 						CreatedOnToolsVersion = 14.2;
@@ -320,7 +319,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4653685A2E0AF0C40026EDDE /* Secrets.xcconfig in Resources */,
 				465368902E0AF5F50026EDDE /* Secrets.xcconfig.example in Resources */,
 				46B84890298422C8006D58FD /* LaunchScreen.storyboard in Resources */,
 			);
@@ -447,6 +445,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -509,6 +508,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -587,7 +587,6 @@
 		46B848AE298422C8006D58FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -607,7 +606,6 @@
 		46B848AF298422C8006D58FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -627,7 +625,6 @@
 		46B848B1298422C8006D58FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 78BZCUCGN3;
@@ -645,7 +642,6 @@
 		46B848B2298422C8006D58FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 78BZCUCGN3;

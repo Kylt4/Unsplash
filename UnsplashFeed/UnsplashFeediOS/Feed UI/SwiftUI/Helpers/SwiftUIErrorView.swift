@@ -18,7 +18,7 @@ struct SwiftUIErrorView: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .frame(height: errorIsVisible ? 80 : 0)
-            .background(.blue)
+            .background(.red)
             .padding(.top)
             .opacity(errorIsVisible ? 1 : 0)
             .animation(.easeInOut(duration: 0.3), value: errorIsVisible)
