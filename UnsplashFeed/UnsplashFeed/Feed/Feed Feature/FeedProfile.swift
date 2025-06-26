@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct FeedProfile: Equatable, Hashable {
+public struct FeedProfile: Equatable, Hashable, Sendable {
     public let id: String
     public let name: String
     public let username: String

@@ -7,6 +7,37 @@
 
 import Foundation
 import XCTest
+import UnsplashFeed
+
+public struct LocalFeedImage: Equatable, Hashable {
+    public let id: String
+    public let title: String?
+    public let imageURL: URL
+    public let likes: Int
+    public let profile: LocalFeedProfile
+
+    public init(id: String, title: String?, imageURL: URL, likes: Int, profile: LocalFeedProfile) {
+        self.id = id
+        self.title = title
+        self.imageURL = imageURL
+        self.likes = likes
+        self.profile = profile
+    }
+}
+
+public struct LocalFeedProfile: Equatable, Hashable {
+    public let id: String
+    public let name: String
+    public let username: String
+    public let imageURL: URL
+
+    public init(id: String, name: String, username: String, imageURL: URL) {
+        self.id = id
+        self.name = name
+        self.username = username
+        self.imageURL = imageURL
+    }
+}
 
 final class LocalFeedCache: @unchecked Sendable {
     private let store: FeedStore
@@ -15,16 +46,32 @@ final class LocalFeedCache: @unchecked Sendable {
         self.store = store
     }
 
-    func save() async throws {
+    func save(_ feed: [FeedImage]) async throws {
         try await store.deleteCachedFeed()
-        try await store.insert()
+        try await store.insert(feed.map(\.toLocal))
+    }
+}
+
+extension FeedImage {
+    var toLocal: LocalFeedImage {
+        return LocalFeedImage(
+            id: id,
+            title: title,
+            imageURL: imageURL,
+            likes: likes,
+            profile: LocalFeedProfile(
+                id: profile.id,
+                name: profile.name,
+                username: profile.username,
+                imageURL: profile.imageURL)
+        )
     }
 }
 
 class FeedStore: @unchecked Sendable {
     enum ReceivedMessage: Equatable {
         case deleteCachedFeed
-        case insert
+        case insert(_ feed: [LocalFeedImage])
     }
 
     private(set) var messages: [ReceivedMessage] = []
@@ -57,8 +104,8 @@ class FeedStore: @unchecked Sendable {
 
     // MARK: - Insertions
 
-    func insert() async throws {
-        messages.append(.insert)
+    func insert(_ feed: [LocalFeedImage]) async throws {
+        messages.append(.insert(feed))
         try await withCheckedThrowingContinuation { continuation in
             insertionContinuation = continuation
         }
@@ -91,19 +138,22 @@ class FeedCacheUseCasesTests: XCTestCase {
         let sut = LocalFeedCache(store: store)
         let deletionError = NSError(domain: "deletion error", code: 0)
 
-        await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed]) {
-            await store.completeDeletionWithError(deletionError)
-        }
+        Task { try await sut.save([]) }
+        await store.completeDeletionWithError(deletionError)
+
+        XCTAssertEqual(store.messages, [.deleteCachedFeed])
     }
 
     func test_save_requestFeedInsertionOnSucessfulDeletion() async {
         let store = FeedStore()
         let sut = LocalFeedCache(store: store)
+        let feed = uniqueFeed()
 
-        await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed, .insert], when: {
-            await store.completeDeletionSuccessfully()
-            await store.completeInsertionSuccessfully()
-        })
+        Task { try await sut.save(feed) }
+        await store.completeDeletionSuccessfully()
+        await store.completeInsertionSuccessfully()
+
+        XCTAssertEqual(store.messages, [.deleteCachedFeed, .insert(feed.map(\.toLocal))])
     }
 
     func test_save_failsOnDeletionError() async {
@@ -141,12 +191,13 @@ class FeedCacheUseCasesTests: XCTestCase {
 
     func expect(_ sut: LocalFeedCache,
                 store: FeedStore,
+                feed: [FeedImage],
                 toCompleteWith expectedMessages: [FeedStore.ReceivedMessage],
                 when action: () async -> Void,
                 file: StaticString = #filePath,
                 line: UInt = #line) async {
 
-        Task { try await sut.save() }
+        Task { [weak sut] in try await sut?.save([]) }
 
         try? await Task.sleep(nanoseconds: 1_000_000)
         await action()
@@ -160,7 +211,7 @@ class FeedCacheUseCasesTests: XCTestCase {
                 file: StaticString = #filePath,
                 line: UInt = #line) async {
 
-        let task = Task { try await sut.save() }
+        let task = Task { try await sut.save([]) }
 
         await action()
 
@@ -173,8 +224,20 @@ class FeedCacheUseCasesTests: XCTestCase {
 
         XCTAssertEqual(receivedError as? NSError, expectedError as? NSError, file: file, line: line)
     }
-}
 
-func waitForContinuation() async {
-    try? await Task.sleep(nanoseconds: 1_000_000)
+    func uniqueImageFeed() -> FeedImage {
+        return FeedImage(id: UUID().uuidString,
+                         title: "any title",
+                         imageURL: URL(string: "http://any-image-url.com")!,
+                         likes: Int.random(in: 0...100),
+                         profile: FeedProfile(
+                            id: UUID().uuidString,
+                            name: "any name",
+                            username: "any username",
+                            imageURL: URL(string: "http://any-image-url.com")!))
+    }
+
+    func uniqueFeed() -> [FeedImage] {
+        return [uniqueImageFeed(), uniqueImageFeed()]
+    }
 }
