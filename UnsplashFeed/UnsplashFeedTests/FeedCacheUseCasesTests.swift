@@ -80,7 +80,7 @@ class FeedCacheUseCasesTests: XCTestCase {
     func test_save_doesNotRequestFeedInsertionOnDeletionError() async {
         let store = FeedStore()
         let sut = LocalFeedCache(store: store)
-        let deletionError = NSError(domain: "any error", code: 0)
+        let deletionError = NSError(domain: "deletion error", code: 0)
 
         await expect(sut, store: store, toCompleteWith: [.deleteCachedFeed]) {
             store.completeDeletionWithError(deletionError)
@@ -96,6 +96,24 @@ class FeedCacheUseCasesTests: XCTestCase {
             store.completeDeletionSuccessfully()
             store.completeInsertionSucessfully()
         })
+    }
+
+    func test_save_failsOnDeletionError() async {
+        let store = FeedStore()
+        let sut = LocalFeedCache(store: store)
+        let deletionError = NSError(domain: "deletion error", code: 0)
+
+        let task = Task { try await sut.save() }
+
+        try? await Task.sleep(nanoseconds: 1_000_000)
+        store.completeDeletionWithError(deletionError)
+
+        do {
+            try await task.value
+            XCTFail("Expected error but save succeeded")
+        } catch {
+            XCTAssertEqual(error as NSError, deletionError)
+        }
     }
 
     // MARK: - Helpers
