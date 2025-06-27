@@ -8,7 +8,7 @@
 import Foundation
 import UnsplashFeed
 
-class FeedStoreSpy: FeedStore {
+class FeedStoreSpy: FeedStore, @unchecked Sendable {
     enum ReceivedMessage: Equatable {
         case deleteCachedFeed
         case insert(_ feed: [LocalFeedImage])

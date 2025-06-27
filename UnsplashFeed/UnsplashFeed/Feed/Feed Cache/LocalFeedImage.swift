@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LocalFeedImage: Equatable, Hashable {
+public struct LocalFeedImage: Equatable, Hashable, Sendable {
     public let id: String
     public let title: String?
     public let imageURL: URL
@@ -23,7 +23,7 @@ public struct LocalFeedImage: Equatable, Hashable {
     }
 }
 
-public struct LocalFeedProfile: Equatable, Hashable {
+public struct LocalFeedProfile: Equatable, Hashable, Sendable {
     public let id: String
     public let name: String
     public let username: String

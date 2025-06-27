@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol FeedStore {
+public protocol FeedStore: Sendable {
     func deleteCachedFeed() async throws
     func insert(_ feed: [LocalFeedImage]) async throws
 }

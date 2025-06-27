@@ -46,7 +46,11 @@ class FeedCacheUseCasesTests: XCTestCase {
         let sut = LocalFeedCache(store: store)
         let deletionError = NSError(domain: "deletion error", code: 0)
 
-        await expect(sut, toCompleteWith: deletionError, when: {
+        let task = Task {
+            try await sut.save([])
+        }
+
+        await expect(task, toCompleteWith: deletionError, when: {
             await store.completeDeletionWithError(deletionError)
         })
     }
@@ -56,7 +60,11 @@ class FeedCacheUseCasesTests: XCTestCase {
         let sut = LocalFeedCache(store: store)
         let insertionError = NSError(domain: "insertion error", code: 0)
 
-        await expect(sut, toCompleteWith: insertionError) {
+        let task = Task {
+            try await sut.save([])
+        }
+
+        await expect(task, toCompleteWith: insertionError) {
             await store.completeDeletionSuccessfully()
             await store.completeInsertionWithError(insertionError)
         }
@@ -66,7 +74,9 @@ class FeedCacheUseCasesTests: XCTestCase {
         let store = FeedStoreSpy()
         let sut = LocalFeedCache(store: store)
 
-        await expect(sut, toCompleteWith: nil) {
+        let task = Task { try await sut.save([]) }
+
+        await expect(task, toCompleteWith: nil) {
             await store.completeDeletionSuccessfully()
             await store.completeInsertionSuccessfully()
         }
@@ -74,23 +84,22 @@ class FeedCacheUseCasesTests: XCTestCase {
 
     // MARK: - Helpers
 
-    func expect(_ sut: LocalFeedCache,
-                toCompleteWith expectedError: Error?,
-                when action: () async -> Void,
-                file: StaticString = #filePath,
-                line: UInt = #line) async {
-
-        let task = Task { try await sut.save([]) }
-
+    func expect(
+        _ task: Task<Void, Error>,
+        toCompleteWith expectedError: Error?,
+        when action: () async -> Void,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
         await action()
 
-        var receivedError: Error?
         do {
             try await task.value
+            if expectedError != nil {
+                XCTFail("Expected error but got success", file: file, line: line)
+            }
         } catch {
-            receivedError = error
+            XCTAssertEqual(error as NSError?, expectedError as NSError?, file: file, line: line)
         }
-
-        XCTAssertEqual(receivedError as? NSError, expectedError as? NSError, file: file, line: line)
     }
 }

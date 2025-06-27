@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class LocalFeedCache: @unchecked Sendable {
+public final class LocalFeedCache {
     private let store: FeedStore
 
     public init(store: FeedStore) {
